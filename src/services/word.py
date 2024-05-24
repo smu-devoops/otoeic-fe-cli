@@ -4,10 +4,12 @@ import dataclasses
 import datetime
 import random
 import typing
+import requests
 
 from user import User
 from user import user_service
 
+HOST = "http://172.30.1.75:8000"
 
 class WordAlreadyExistsException(Exception):
     pass
@@ -35,8 +37,10 @@ class WordService:
         pass
 
     def list(self) -> typing.List[Word]:
-        # TODO
-        pass
+        res = requests.get(HOST + "/word")
+        data= res.json()
+        word_list = Word(id=data["id"],english=data["english"],korean=["korean"],type=data["type"],level=data["level"],date_modified=data["date_modified"],date_created=data["date_created"],user_created=data["user_created"])
+
 
     def random(self, amount: int, level: str) -> typing.List[Word]:
         # TODO
