@@ -6,19 +6,19 @@ from services.user import User
 from services.word import Word
 
 def render_login_page():
-    # TODO
+    print("오토익 영어 단어 학습장에 오신 것을 환영합니다! ")
+    print("로그인하시려면 1, 회원가입하시려면 2를 입력하세요.")
+    input_num = int(input())
+    if input_num == 2 :
+        render_signup_page()
+    
+    print("사용자명을 입력해주세요 : ", end="")
+    username = input()
+    print("비밀번호를 입력해주세요 : ", end="")
+    password = input()
 
-    # 만약 사용자가 회원가입을 원한다면...
-    # add_word = Word(id=None, english="cat", korean="고양이", type="n", level=1, date_modified=None, date_created=None, user_created=1)
-    # word_service.create(add_word)
-
-    words = word_service.list()
-    # words[-1].english = "upward"
-    # words[-1].korean = "위"
-    # words[-1].type = "n"
-    # words[-1].level = 1
-    # word_service.update(words[-1])
-
-    # word_service.delete(words[-1])
-    # word_service.delete(words[-2])
-    input()
+    user = user_service.login(username=username, password=password)
+    if user == None:
+        print("로그인에 실패하였습니다.")
+    else : 
+        print("로그인에 성공하였습니다! 사용자 홈 화면으로 이동합니다.")

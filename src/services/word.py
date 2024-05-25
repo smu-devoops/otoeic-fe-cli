@@ -6,10 +6,9 @@ import random
 import typing
 import requests
 
-from services.user import User
-from services.user import user_service
+from constants import HOST
 
-HOST = "http://172.30.1.75:8000"
+from services.user import User
 
 class WordAlreadyExistsException(Exception):
     pass
@@ -24,8 +23,7 @@ class Word:
     level: int
     date_modified: datetime.datetime
     date_created: datetime.datetime
-    user_created: User
-    
+    user_created: int
 
 class WordService:
 
@@ -37,26 +35,50 @@ class WordService:
             "level": word.level,
             "user_created": word.user_created,
         })
+        
+        if add_data.status_code != 400 :
+            print("단어 추가 완료")
+
+        else :
+            print("단어 추가 실패")
+            
         return add_data
 
     def get(self, id: int) -> Word | None:
         get_words = self.list()
-        return get_words[id]
+        return get_words[id-1]
 
     def list(self) -> typing.List[Word]:
         res = requests.get(HOST + "/word")
         data= res.json()
         word_list = []
         for word in data:
-            word_dic=Word(id=word["id"], english=word["english"],korean=["korean"],type=word["type"],level=word["level"],date_modified=word["date_modified"],date_created=word["date_created"],user_created=word["user_created"])
+            # word_dic=Word(id=word["id"], english=word["english"],korean=["korean"],type=word["type"],level=word["level"],date_modified=word["date_modified"],date_created=word["date_created"],user_created=word["user_created"])
+            word_dic=Word(**word)
+            word_list.append(word_dic)
+
+        return word_list
+    
+    def ordered_list(self, order_num: int) -> typing.List[Word]:
+        query_params = ["?ordering=english", "?ordering=-english", "?ordering=date_modified", "?ordering=-date_modified"]
+        selected_query_param = query_params[order_num-1]
+        res = requests.get(HOST + "/word" + str(selected_query_param))
+        data= res.json()
+        word_list = []
+        for word in data:
+            # word_dic=Word(id=word["id"], english=word["english"],korean=["korean"],type=word["type"],level=word["level"],date_modified=word["date_modified"],date_created=word["date_created"],user_created=word["user_created"])
+            word_dic=Word(**word)
             word_list.append(word_dic)
 
         return word_list
 
-    def random(self, amount: int, level: str) -> typing.List[Word]:
-        words = self.list()
-        random.shuffle(words)
-        ...
+    # def random(self, amount: int, level: str) -> typing.List[Word]:
+    #     words = self.list()
+    #     for word in words:
+    #         if word.level!= level:
+    #             words.remove(word)
+    #     random.shuffle(words)
+    #     return words[:amount]
 
     def update(self, word: Word) -> None:
         # words = self.list()
@@ -67,10 +89,23 @@ class WordService:
             "level": word.level,
         })
 
+        if updata_data.status_code != 400 :
+            print("단어 수정 완료")
+
+        else :
+            print("단어 수정 실패")
+
         return
 
     def delete(self, word:Word) -> None:
         del_data = requests.delete(HOST + "/word/" + str(word.id))
+        
+        if del_data.status_code != 400 :
+            print("단어 수정 완료")
+
+        else :
+            print("단어 수정 실패")
+
         return
 
 
