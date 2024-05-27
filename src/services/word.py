@@ -72,14 +72,6 @@ class WordService:
 
         return word_list
 
-    # def random(self, amount: int, level: str) -> typing.List[Word]:
-    #     words = self.list()
-    #     for word in words:
-    #         if word.level!= level:
-    #             words.remove(word)
-    #     random.shuffle(words)
-    #     return words[:amount]
-
     def update(self, word: Word) -> None:
         # words = self.list()
         updata_data = requests.patch(HOST + "/word/" + str(word.id), data={

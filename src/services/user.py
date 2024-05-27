@@ -56,7 +56,7 @@ class UserService:
             "password":password
         })
 
-        if (res.status_code != 400):
+        if (res.status_code == 400):
             print("존재하는 사용자 이름입니다. 다른 이름을 입력해주세요.")
             raise UserAlreadyExistsException
 
