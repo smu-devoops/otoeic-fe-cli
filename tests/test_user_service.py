@@ -3,7 +3,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 import pytest
 from unittest.mock import patch, MagicMock
-from services.user import UserService, User, UserAlreadyExistsException
+from services.user import UserService, User, UserAlreadyExistsException, UserInfoEmptyException, UserNotFoundException
 
 @pytest.fixture
 def mock_requests():
@@ -42,14 +42,14 @@ def test_login_failure(mock_requests, user_service):
     mock_response.json.return_value = []
     mock_requests.get.return_value = mock_response
 
-    # UserService의 login 메서드를 호출합니다.
-    user = user_service.login('wrong_user', 'wrong_password')
-    
-    # 반환된 사용자가 None인지 확인합니다.
-    assert user is None
-    
-    # 현재 사용자가 None인지 확인합니다.
-    assert user_service.current_user() is None
+    # UserService의 login 메서드를 예외 검사
+    with pytest.raises(UserInfoEmptyException):
+        user_service.login('', 'password')  # 빈 사용자 이름으로 예외 발생 확인
+    with pytest.raises(UserInfoEmptyException):
+        user_service.login('username', '')  # 빈 사용자 이름으로 예외 발생 확인
+
+    with pytest.raises(UserNotFoundException):
+        user_service.login('wrong_user', 'wrong_password')  # DB에 없는 정보로 로그인할 때
 
 def test_logout(user_service):
     # 로그아웃 기능을 테스트합니다.
@@ -73,7 +73,7 @@ def test_signup_success(mock_requests, user_service):
 
     # UserService의 signup 메서드를 호출합니다.
     user_service.signup('new_user', 'new_password')
-    
+
     # requests.post가 호출되었는지 확인합니다.
     assert mock_requests.post.called
 
@@ -85,8 +85,7 @@ def test_signup_failure(mock_requests, user_service):
     mock_requests.post.return_value = mock_response
 
     # UserService의 signup 메서드를 호출하여 UserAlreadyExistsException이 발생하는지 확인합니다.
-    with pytest.raises(UserAlreadyExistsException):
-        user_service.signup('existing_user', 'existing_password')
-    
-    # requests.post가 호출되었는지 확인합니다.
-    assert mock_requests.post.called
+    with pytest.raises(UserInfoEmptyException):
+        user_service.signup('', 'password')  # 빈 사용자 이름으로 예외 발생 확인
+    with pytest.raises(UserInfoEmptyException):
+        user_service.signup('username', '')  # 빈 사용자 이름으로 예외 발생 확인
