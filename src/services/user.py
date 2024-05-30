@@ -42,6 +42,9 @@ class UserService:
     def __init__(self):
         self._current_user = None
 
+    def is_logged_in(self) -> bool:
+        return self._current_user is not None
+
     def login(self, username: str, password: str) -> typing.Optional[User]:
         if username.strip() == "" or password.strip() == "":
             raise UserInfoEmptyException("사용자명/비밀번호는 빈칸일 수 없습니다.")
@@ -53,6 +56,7 @@ class UserService:
         if first_res.status_code != 200:
             return None
 
+        # TODO: 나중에 꼭꼭 제거
         res = session.get(HOST + "/user/me")
         data = res.json()
         user = User(data)

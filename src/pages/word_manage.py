@@ -50,11 +50,15 @@ def render_word_manage_page():
             )
         )
 
-    operation_num = int(
-        input(
-            "단어를 추가하려면 1, 단어를 수정하려면 2, 삭제하려면 3, 단어 관리를 취소하려면 1,2,3을 제외하고 입력하세요. : "
-        )
+    operation_num = input(
+        "단어를 추가하려면 1, 단어를 수정하려면 2, 단어를 삭제하려면 3, \n 단어 관리를 취소하려면 1,2,3을 제외하고 입력하세요. : "
     )
+    if operation_num.isdigit() and 1 <= int(operation_num) <= 3:
+        operation_num = int(operation_num)
+    else:
+        print("단어 관리를 취소합니다. 홈 화면으로 돌아갑니다.")
+        return
+
     if operation_num == 1:
         add_word = Word(
             id=None,
@@ -124,5 +128,3 @@ def render_word_manage_page():
                 break
         else:
             print("삭제하고 싶은 단어가 단어장에 존재하지 않습니다.")
-    else:
-        print("단어 관리를 취소합니다.")

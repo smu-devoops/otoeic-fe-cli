@@ -5,8 +5,7 @@ import datetime
 import random
 import typing
 
-import requests
-from constants import HOST
+from constants import HOST, session
 from services.user import User
 from services.word import Word
 
@@ -15,15 +14,15 @@ class WordAlreadyExistsException(Exception):
     pass
 
 
+# @dataclasses.dataclass
+# class Question:
+#     word: QuestionWord
+#     order: int
+#     # submitted_answer: str
+
+
 @dataclasses.dataclass
 class Question:
-    word: QuestionWord
-    order: int
-    # submitted_answer: str
-
-
-@dataclasses.dataclass
-class QuestionWord:
     korean: str
     type: str
 
@@ -38,14 +37,14 @@ class Exam:
     # point: int
     # user_created:
     date_created: datetime.datetime
-    date_submitted: datetime.datetime
+    # date_submitted: datetime.datetime/
     questions: typing.List[Question]
 
 
 class ExamService:
     # API 요청으로 exam 클래스 객체 받아오는 메소드
     def get_exam(self, exam: Exam) -> Exam:
-        exam_data = requests.post(
+        exam_data = session.post(
             HOST + "/exam",
             data={"level": exam.level, "amount": exam.amount, "ranked": exam.ranked},
         )
@@ -57,7 +56,6 @@ class ExamService:
             amount=exam_data["amount"],
             ranked=exam_data["ranked"],
             date_created=exam_data["date_created"],
-            date_submitted=exam_data["date_submitted"],
             questions=exam_data["questions"],
         )
         return res_exam
@@ -66,7 +64,7 @@ class ExamService:
         question_list = []
         for question in exam.questions:
             word_data = question["word"]
-            word = QuestionWord(
+            word = Question(
                 korean=word_data["korean"],
                 type=word_data["type"],
             )
@@ -84,14 +82,17 @@ class ExamService:
             print(question.word.type)
 
     # 사용자 문제를 푼 answer_list를 받아서 exam/id/submit로 post
-    def submit(self, exam: Exam, answer_list: typing.List[str]) -> None:
+    def submit(self, exam: Exam, answer_list: typing.List[str]) -> typing.List[bool]:
 
         print(HOST + "/exam/" + str(exam.id) + "/submit")
-        exam_data = requests.post(
+        exam_data = session.post(
             HOST + "/exam/" + str(exam.id) + "/submit", data={"answers": answer_list}
         )
-        # exam_data = exam_data.json()
-        return
+        exam_data = exam_data.json()
+        correct_list = []
+        for answer in exam_data["questions"]:
+            correct_list.append(answer["is_correct"])
+        return correct_list
 
 
 exam_service = ExamService()

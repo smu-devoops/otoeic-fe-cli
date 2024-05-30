@@ -5,7 +5,6 @@ import datetime
 import random
 import typing
 
-import requests
 from constants import HOST, session
 from services.user import User, user_service
 
@@ -81,9 +80,7 @@ class WordService:
         if 200 <= add_data.status_code <= 299:
             print("단어 추가 완료")
 
-        print(add_data)
         data = add_data.json()
-        print(data)
         add_word = Word(
             id=data["id"],
             english=data["english"],
