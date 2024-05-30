@@ -64,9 +64,9 @@ class WordService:
         ):
             raise WordInfoEmptyException("단어 정보가 비어있습니다.")
 
-        word_exist = self.get(word.id)
-        if word_exist != None:
-            raise WordAlreadyExistsException("이미 존재하는 단어입니다.")
+        # word_exist = self.get(word.id)
+        # if word_exist != None:
+        #     raise WordAlreadyExistsException("이미 존재하는 단어입니다.")
 
         add_data = session.post(
             HOST + "/word",
@@ -75,7 +75,6 @@ class WordService:
                 "korean": word.korean,
                 "type": word.type,
                 "level": word.level,
-                "user_created": user_service.current_user(),
             },
         )
 

@@ -19,21 +19,21 @@ class User:
     id: int
     username: str
     level: int
-    is_admin: bool
-    streak: int
-    streak_freeze_amount: int
-    is_streak_freeze_activated: bool
-    point: int
+    # is_admin: bool
+    # streak: int
+    # streak_freeze_amount: int
+    # is_streak_freeze_activated: bool
+    # point: int
 
     def __init__(self, json):
         self.id = json["id"]
         self.username = json["username"]
         self.level = json["level"]
-        self.is_admin = json["is_admin"]
-        self.streak = json["streak"]
-        self.streak_freeze_amount = json["streak_freeze_amount"]
-        self.is_streak_freeze_activated = json["is_streak_freeze_activated"]
-        self.point = json["point"]
+        # self.is_admin = json["is_admin"]
+        # self.streak = json["streak"]
+        # self.streak_freeze_amount = json["streak_freeze_amount"]
+        # self.is_streak_freeze_activated = json["is_streak_freeze_activated"]
+        # self.point = json["point"]
 
 
 # 현재 유저 하나의 정보를 관리하는 서비스
@@ -46,13 +46,14 @@ class UserService:
         if username.strip() == "" or password.strip() == "":
             raise UserInfoEmptyException("사용자명/비밀번호는 빈칸일 수 없습니다.")
 
-        res = session.post(
+        first_res = session.post(
             HOST + "/user/login", data={"username": username, "password": password}
         )
 
-        if res.status_code != 200:
+        if first_res.status_code != 200:
             return None
 
+        res = session.get(HOST + "/user/me")
         data = res.json()
         user = User(data)
         self._current_user = user

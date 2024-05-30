@@ -12,8 +12,15 @@ def render_word_manage_page():
     print("알파벳 내림차순 : 2")
     print("수정시각 오름차순 : 3")
     print("수정시각 내림차순 : 4")
-    sort_num = int(input("정렬 기준을 선택해주세요 : "))
-    words = word_service.ordered_list(sort_num)
+
+    sort_num = input("정렬 기준을 선택해주세요 : ")
+    if sort_num.isdigit() and 1 <= int(sort_num) <= 4:
+        sort_num = int(sort_num)
+        words = word_service.ordered_list(sort_num)
+    else:
+        print("잘못된 입력입니다. 다시 입력해주세요.")
+        render_word_manage_page()
+        return
 
     # 열 너비 설정
     col_widths = {
@@ -60,8 +67,7 @@ def render_word_manage_page():
             user_created=1,
         )
         complete_add_word = word_service.create(add_word)
-        print(complete_add_word)
-        input()
+
         print(
             "다음과 같이 추가되었습니다 : "
             + complete_add_word.english

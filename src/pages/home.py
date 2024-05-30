@@ -15,8 +15,8 @@ def render_home_page():
     print("단어 관리하기 : 3")
 
     menu_input = input()
-    if str(0) <= menu_input <= str(9) :
-        menu_num = int()
+    if str(0) <= menu_input <= str(9):
+        menu_num = int(menu_input)
         if menu_num == 1:
             render_word_test_page("normal")
         elif menu_num == 2:
@@ -25,3 +25,5 @@ def render_home_page():
             render_word_manage_page()
         else:
             print("잘못된 명령입니다.")
+    else:
+        print("한 자리 숫자가 아닙니다.")
