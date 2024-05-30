@@ -64,9 +64,11 @@ class UserService:
         return user
 
     def logout(self) -> None:
-        res = session.post(HOST + "/user/logout")
-        if res.status_status != 200:
+        res = session.get(HOST + "/user/logout")
+
+        if res.status_code != 200:
             raise Exception("로그아웃 실패")
+        self._current_user = None
         return None
 
     def signup(self, username: str, password: str):
