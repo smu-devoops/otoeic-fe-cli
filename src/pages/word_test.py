@@ -28,8 +28,6 @@ def render_word_test_page(type):
     count = 0
     answer_list = []
     for question in question_list:
-        # print(question)
-        # input()
         count += 1
         answer = input(str(count)+"." + "(" + question.word["type"] + ")" + question.word["korean"] + ": ")
         answer_list.append(answer)

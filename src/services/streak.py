@@ -1,22 +1,38 @@
-from __future__ import annotations
+# from __future__ import annotations
 
-import dataclasses
-import datetime
-import random
-import typing
-import requests
+# import dataclasses
+# import datetime
+# import random
+# import typing
 
-from constants import HOST
+# import requests
+# from constants import HOST
+# from services.user import User, user_service
 
-from services.user import User
+# # @dataclasses.dataclass
+# # class Streak:
+# #     user: User
+# #     pass
 
-@dataclasses.dataclass
-class Streak:
-    user : User
-    pass
 
-class StreakService:
-    pass
+# class UserNotLoginException(Exception):
+#     pass
 
-streak_service = StreakService()
 
+# class StreakService:
+#     def read_calendar(self, user: User):
+#         res = requests.get(HOST + "/streak/calendar/" + str(user.id))
+#         data = res.json()
+#         calendar = data["calendar"]
+#         return calendar
+
+#     def buy_streak_freeze(self, user: User):
+#         if user_service.current_user != user:
+#             raise UserNotLoginException
+#         res = requests.post(HOST + "/streak/freeze")
+
+#     def toggle_streak_freeze(self):
+#         pass
+
+
+# streak_service = StreakService()

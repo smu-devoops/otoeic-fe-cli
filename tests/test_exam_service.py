@@ -32,27 +32,36 @@ def sample_exam():
     }
     user = User(user_data)
     
-    word = Word(
-        id=1,
-        english='test',
-        korean='테스트',
-        type='noun',
-        level=1,
-        date_modified=None,
-        date_created=None,
-        user_created=1
-    )
-    question = Question(word=word, order=1, submitted_answer='')
-    exam = Exam(
-        id=1,
-        user=user,
-        level=1,
-        amount=1,
-        point=0,
-        date_created=datetime.datetime.now(),
-        date_submitted=datetime.datetime.now(),
-        questions=[question]
-    )
+    word_data = {
+        'id': 1,
+        'english': 'test',
+        'korean': '테스트',
+        'type': 'noun',
+        'level': 1,
+        'date_modified': None,
+        'date_created': None,
+        'user_created': 1
+    }
+    word = Word(**word_data)
+    
+    question_data = {
+        'word': word,
+        'order': 1,
+        'submitted_answer': ''
+    }
+    question = Question(**question_data)
+    
+    exam_data = {
+        'id': 1,
+        'user': user,
+        'level': 1,
+        'amount': 1,
+        'point': 0,
+        'date_created': datetime.datetime.now(),
+        'date_submitted': datetime.datetime.now(),
+        'questions': [question]
+    }
+    exam = Exam(**exam_data)
     return exam
 
 def test_get_exam(mock_requests, exam_service, sample_exam):
@@ -94,10 +103,10 @@ def test_get_exam(mock_requests, exam_service, sample_exam):
     }
     mock_requests.post.return_value = mock_response
 
-    exam = exam_service.get_exam(sample_exam)
-    assert exam.id == 1
-    assert exam.user.username == 'test_user'
-    assert len(exam.questions) == 1
+    exam_result = exam_service.get_exam(sample_exam)
+    assert exam_result.id == sample_exam.id
+    assert exam_result.user.username == 'test_user'
+    assert len(exam_result.questions) == 1
 
 def test_get_question_list(mock_requests, exam_service, sample_exam):
     question_list = exam_service.get_question_list(sample_exam)
