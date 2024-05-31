@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from app.pages import Page
-from app.pages import MenuPage
+from . import pages
 
 
 class Application:
     def __init__(self) -> None:
-        page = MenuPage()
+        page = pages.MenuPage()
         self._start(page)
 
-    def _start(self, page: Page):
+    def _start(self, page: pages.Page):
         while page is not None:
             page = page.render()
