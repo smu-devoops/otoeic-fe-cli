@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from app.apis import api_client
+
 
 class Page:
     def render(self) -> Page | None:
