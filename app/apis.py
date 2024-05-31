@@ -38,6 +38,15 @@ class RestAPI(API):
     def post(self, path: str, data: dict) -> requests.Response:
         return self.client.post(self.host + path, data=data)
 
+    def login(self, username: str, password: str) -> Optional[User]:
+        path = '/user/login'
+        data = {'username': username, 'password': password}
+        res = self.post(path, data)
+        if res.status_code != 200:
+            return None
+        # TODO: 예외 처리
+        return User(**res.json())
+
 
 def _make_api() -> API:
     return RestAPI()
