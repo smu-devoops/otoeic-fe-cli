@@ -42,13 +42,29 @@ class MenuPage(Page):
 
 
 class LoginPage(Page):
-    # TODO: @이찬민 - 로그인 페이지를 구현해주세요.
-    pass
+
+    def render(self) -> Page | None:
+        print(
+            "-------------------------로그인 페이지입니다---------------------------------"
+        )
+        username = input("사용자명을 입력해주세요:")
+        password = input("비밀번호를 입력해주세요:")
+
+        # login post
+        user = api_client.login(username, password)
+
+        # 로그인 성공시 UserHomePage로 이동
+        if user is not None:
+            return UserHomePage()
+        # 로그인 실패시 다시 로그인 페이지로 이동
+        else:
+            return LoginPage()
 
 
 class SignupPage(Page):
-    # TODO: @이찬민 - 회원가입 페이지를 구현해주세요.
-    pass
+
+    def render(self) -> Page | None:
+        pass
 
 
 class UserHomePage(Page):
