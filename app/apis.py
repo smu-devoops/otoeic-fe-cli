@@ -1,5 +1,7 @@
 from typing import Optional
 
+import requests
+
 from app.models import *
 
 
@@ -25,8 +27,20 @@ class API:
         raise NotImplementedError
 
 
+class RestAPI(API):
+    def __init__(self) -> None:
+        self.client = requests.Session()
+        self.host = 'http://otoeic.timelimitexceeded.kr'
+
+    def get(self, path: str) -> requests.Response:
+        return self.client.get(self.host + path)
+
+    def post(self, path: str, data: dict) -> requests.Response:
+        return self.client.post(self.host + path, data=data)
+
+
 def _make_api() -> API:
-    return API()
+    return RestAPI()
 
 
 api_client = _make_api()
