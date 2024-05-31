@@ -2,7 +2,8 @@ from app.apis.base import *
 
 
 def create_user_api() -> UserAPI:
-    return UserAPI()
+    from app.apis.rest import RestUserAPI
+    return RestUserAPI()
 
 
 def create_word_api() -> WordAPI:
