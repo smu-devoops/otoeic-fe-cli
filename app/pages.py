@@ -55,6 +55,7 @@ class LoginPage(Page):
 
         # 로그인 성공시 UserHomePage로 이동
         if user is not None:
+            print("로그인 성공!", user)
             return UserHomePage()
         # 로그인 실패시 다시 로그인 페이지로 이동
         else:
@@ -64,7 +65,21 @@ class LoginPage(Page):
 class SignupPage(Page):
 
     def render(self) -> Page | None:
-        pass
+        print(
+            "-------------------------회원가입 페이지입니다---------------------------------"
+        )
+        username = input("사용자명을 입력해주세요:")
+        password = input("비밀번호를 입력해주세요:")
+
+        # signup post
+        user = api_client.register(username, password)
+        # 회원가입 성공시 LoginPage로 이동
+        if user is not None:
+            print("회원가입 성공!", user)
+            return LoginPage()
+        # 회원가입 실패시 다시 회원가입 페이지로 이동
+        else:
+            return SignupPage()
 
 
 class UserHomePage(Page):
