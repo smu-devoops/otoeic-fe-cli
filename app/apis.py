@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from typing import Optional
 
 import requests
@@ -42,9 +43,17 @@ class RestAPI(API):
         path = '/user/login'
         data = {'username': username, 'password': password}
         res = self.post(path, data)
-        if res.status_code != 200:
+        if res.status_code != HTTPStatus.OK:
             return None
         # TODO: 예외 처리
+        return User(**res.json())
+
+    def register(self, username: str, password: str) -> User | None:
+        path = '/user/register'
+        data = {'username': username, 'password': password}
+        res = self.post(path, data)
+        if res.status_code != HTTPStatus.CREATED:
+            return None
         return User(**res.json())
 
 
