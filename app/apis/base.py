@@ -1,7 +1,24 @@
-from typing import List
-from typing import Optional
+from __future__ import annotations
+
+from typing import *
 
 from app.models import *
+
+
+class API:
+    def __init__(self,
+                 user: UserAPI,
+                 word: WordAPI):
+        self._user = user
+        self._word = word
+
+    @property
+    def user(self) -> UserAPI:
+        return self._user
+
+    @property
+    def word(self) -> WordAPI:
+        return self._word
 
 
 class UserAPI:
