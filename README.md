@@ -58,47 +58,16 @@ TestResultPage : +visit() Optional[Page]
 TestResultPage : -exam ExamDTO
 
 
-class UserDTO
-<<readonly>> UserDTO
-UserDTO : +id int
-UserDTO : +username str
-UserDTO : +freeze_activated bool
-UserDTO : +freeze_amount int
-UserDTO : +level int
-UserDTO : +point int
-UserDTO : +streak int
-UserDTO : +date_created datetime
-UserDTO : +is_staff bool
-
-
-class WordDTO
-WordDTO : +id Optional[int]
-WordDTO : +english str
-WordDTO : +korean str
-WordDTO : +type str
-WordDTO : +level int
-WordDTO : +date_modified Optional[datetime]
-WordDTO : +date_created Optional[datetime]
-WordDTO : +user_created Optional[UserDTO]
-
-
-class ExamDTO
-ExamDTO : +id Optional[int]
-ExamDTO : +level int
-ExamDTO : +questions int
-ExamDTO : +is_ranked bool
-ExamDTO : +point Optional[int]
-ExamDTO : +date_created Optional[datetime]
-ExamDTO : +date_submitted Optional[datetime]
-
-
-class QuestionDTO
-QuestionDTO : +id Optional[int]
-QuestionDTO : +eng Optional[str]
-QuestionDTO : +kor str
-QuestionDTO : +type str
-QuestionDTO : +answer Optional[str]
-QuestionDTO : +is_correct Optional[bool]
+namespace page {
+    class Page
+    class LandingPage
+    class LoginPage
+    class SignupPage
+    class HomePage
+    class WordPage
+    class TestPage
+    class TestResultPage
+}
 
 
 class API
@@ -151,38 +120,86 @@ note for ExamAPI "날짜별 시험(스트릭) 조회를 하려면 ExamAPI.list()
 각 QuestionDTO.answer 들을 수정한 뒤, ExamAPI.submit() 에 전달하도록 한다."
 
 
+namespace api {
+    class API
+    class UserAPI
+    class WordAPI
+    class ExamAPI
+}
+
+
+class UserDTO
+<<readonly>> UserDTO
+UserDTO : +id int
+UserDTO : +username str
+UserDTO : +freeze_activated bool
+UserDTO : +freeze_amount int
+UserDTO : +level int
+UserDTO : +point int
+UserDTO : +streak int
+UserDTO : +date_created datetime
+UserDTO : +is_staff bool
+
+
+class WordDTO
+WordDTO : +id Optional[int]
+WordDTO : +english str
+WordDTO : +korean str
+WordDTO : +type str
+WordDTO : +level int
+WordDTO : +date_modified Optional[datetime]
+WordDTO : +date_created Optional[datetime]
+WordDTO : +user_created Optional[UserDTO]
+
+
+class ExamDTO
+ExamDTO : +id Optional[int]
+ExamDTO : +level int
+ExamDTO : +questions int
+ExamDTO : +is_ranked bool
+ExamDTO : +point Optional[int]
+ExamDTO : +date_created Optional[datetime]
+ExamDTO : +date_submitted Optional[datetime]
+
+
+class QuestionDTO
+QuestionDTO : +id Optional[int]
+QuestionDTO : +eng Optional[str]
+QuestionDTO : +kor str
+QuestionDTO : +type str
+QuestionDTO : +answer Optional[str]
+QuestionDTO : +is_correct Optional[bool]
+
+
 class LocalUserAPI
+LocalUserAPI : -repository Repository~UserDTO~
 LocalUserAPI : +register(str username, str password) UserDTO
 LocalUserAPI : +login(str username, str password) UserDTO
 LocalUserAPI : +logout()
 LocalUserAPI : +is_logged_in() bool
 LocalUserAPI : +current_user() UserDTO
 LocalUserAPI : +update(UserDTO user) UserDTO
-LocalUserAPI ..> UserRepository
+LocalUserAPI *-- Repository
 
 
 class LocalWordAPI
+LocalWordAPI : -repository Repository~WordDTO~
 LocalWordAPI : +create(WordDTO word) WordDTO
 LocalWordAPI : +list(str sort_by) List~WordDTO~
 LocalWordAPI : +update(WordDTO word) WordDTO
 LocalWordAPI : +delete(WordDTO word) None
-LocalWordAPI ..> WordRepository
+LocalWordAPI *-- Repository
 
 
 class LocalExamAPI
+LocalExamAPI : -repository Repository~ExamDTO~
 LocalExamAPI : +create(ExamDTO exam) ExamDTO
 LocalExamAPI : +get_questions(ExamDTO exam) Tuple[Question]
 LocalExamAPI : +submit(ExamDTO exam, Tuple[Question] questions) ExamDTO
-LocalExamAPI ..> ExamRepository
-
-
-UserRepository ..|> Repository
-WordRepository ..|> Repository
-ExamRepository ..|> Repository
+LocalExamAPI *-- Repository
 
 
 class Repository~E~
-<<abstract>> Repository
 Repository : +save(E entity)
 Repository : +delete(E entity)
 Repository : +all() List[E]
