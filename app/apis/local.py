@@ -1,4 +1,5 @@
 import logging
+import dataclasses
 from typing import *
 
 from app.models import *
@@ -25,7 +26,7 @@ class Repository(Generic[E]):
 
     def save(self, entity: E) -> E:
         if entity.id is None:
-            entity.id = self._auto_increment
+            entity = dataclasses.replace(entity, id=self._auto_increment)
             self._auto_increment += 1
         self._set.discard(entity)
         self._set.add(entity)
@@ -35,14 +36,14 @@ class Repository(Generic[E]):
         self._set.remove(entity)
 
     def all(self) -> List[E]:
-        return list(e.data for e in self._set)
+        return list(self._set)
 
 
+@dataclasses.dataclass(frozen=True)
 class UserPasswordDTO:
-    def __init__(self, user: UserDTO, password: str) -> None:
-        self.id = None
-        self.user = user
-        self.password = password
+    user: UserDTO
+    password: str
+    id: int = None
 
     def __hash__(self) -> int:
         return self.user.id
@@ -55,7 +56,6 @@ class LocalUserAPI(UserAPI):
         self._current_user: Optional[UserDTO] = None
 
     def register(self, username: str, password: str) -> Optional[UserDTO]:
-        logger.warning('이건 Mock API 입니다. 실제 서버로 요청을 보내지 않습니다.')
         user = UserDTO(
             username=username,
             point=0,
@@ -66,8 +66,8 @@ class LocalUserAPI(UserAPI):
             date_created=datetime.datetime.now(),
             is_staff=False,
         )
+        user = self._repository_usr.save(user)
         user_pwd = UserPasswordDTO(user=user, password=password)
-        self._repository_usr.save(user)
         self._repository_pwd.save(user_pwd)
         assert user.id is not None, (
             'UserDTO.id가 None입니다. Repository.save()가 제대로 구현되지 않았습니다.'
@@ -76,7 +76,6 @@ class LocalUserAPI(UserAPI):
         return user
 
     def login(self, username: str, password: str) -> Optional[UserDTO]:
-        logger.warning('이건 Mock API 입니다. 실제 서버로 요청을 보내지 않습니다.')
         for user in self._repository_usr.all():
             if user.username != username:
                 continue
