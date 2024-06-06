@@ -98,7 +98,7 @@ note for UserAPI "스트릭프리즈를 구매하고 싶다면, UserDTO.freeze_a
 class WordAPI
 <<interface>> WordAPI
 WordAPI : +create(WordDTO word) WordDTO
-WordAPI : +list(str sort_by) List~WordDTO~
+WordAPI : +list(str sort_by) List[WordDTO]
 WordAPI : +update(WordDTO word) WordDTO
 WordAPI : +delete(WordDTO word) None
 WordAPI ..> WordDTO
@@ -110,7 +110,7 @@ class ExamAPI
 ExamAPI : +create(ExamDTO exam) ExamDTO
 ExamAPI : +get_questions(ExamDTO exam) List[QuestionDTO]
 ExamAPI : +submit(ExamDTO exam, List[QuestionDTO] questions) ExamDTO
-ExamAPI : +list() List~ExamDTO~
+ExamAPI : +list() List[ExamDTO]
 ExamAPI ..> ExamDTO
 ExamAPI ..> QuestionDTO
 ExamAPI <|.. LocalExamAPI
@@ -186,7 +186,7 @@ LocalUserAPI *-- Repository
 class LocalWordAPI
 LocalWordAPI : -repository Repository~WordDTO~
 LocalWordAPI : +create(WordDTO word) WordDTO
-LocalWordAPI : +list(str sort_by) List~WordDTO~
+LocalWordAPI : +list(str sort_by) List[WordDTO]
 LocalWordAPI : +update(WordDTO word) WordDTO
 LocalWordAPI : +delete(WordDTO word) None
 LocalWordAPI *-- Repository
@@ -197,13 +197,12 @@ LocalExamAPI : -repository Repository~ExamDTO~
 LocalExamAPI : +create(ExamDTO exam) ExamDTO
 LocalExamAPI : +get_questions(ExamDTO exam) List[QuestionDTO]
 LocalExamAPI : +submit(ExamDTO exam, List[QuestionDTO] questions) ExamDTO
-LocalExamAPI : +list() List~ExamDTO~
+LocalExamAPI : +list() List[ExamDTO]
 LocalExamAPI *-- Repository
 
 
 class Repository~E~
 Repository : +save(E entity)
 Repository : +delete(E entity)
-Repository : +all() List[E]
-Repository : +filter() List[E]
+Repository : +list() List[E]
 ```
