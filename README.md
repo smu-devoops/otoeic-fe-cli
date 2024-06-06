@@ -108,8 +108,9 @@ WordAPI <|.. LocalWordAPI
 class ExamAPI
 <<interface>> ExamAPI
 ExamAPI : +create(ExamDTO exam) ExamDTO
-ExamAPI : +get_questions(ExamDTO exam) Tuple[Question]
-ExamAPI : +submit(ExamDTO exam, Tuple[Question] questions) ExamDTO
+ExamAPI : +get_questions(ExamDTO exam) List[QuestionDTO]
+ExamAPI : +submit(ExamDTO exam, List[QuestionDTO] questions) ExamDTO
+ExamAPI : +list() List~ExamDTO~
 ExamAPI ..> ExamDTO
 ExamAPI ..> QuestionDTO
 ExamAPI <|.. LocalExamAPI
@@ -117,7 +118,7 @@ ExamAPI <|.. LocalExamAPI
 note for ExamAPI "날짜별 시험(스트릭) 조회를 하려면 ExamAPI.list()로 조회한 시험의 각 날짜를 참고한다.
 
 만약 응시한 시험에 정답을 제출하고자 한다면, ExamAPI.get_questions()로 가져온 QuestionDTO 들의
-각 QuestionDTO.answer 들을 수정한 뒤, ExamAPI.submit() 에 전달하도록 한다."
+각 QuestionDTO.answer_submitted 들을 수정한 뒤, ExamAPI.submit() 에 전달하도록 한다."
 
 
 namespace api {
@@ -167,7 +168,7 @@ QuestionDTO : +id Optional[int]
 QuestionDTO : +english Optional[str]
 QuestionDTO : +korean str
 QuestionDTO : +type str
-QuestionDTO : +answer Optional[str]
+QuestionDTO : +answer_submitted Optional[str]
 QuestionDTO : +is_correct Optional[bool]
 
 
@@ -194,8 +195,9 @@ LocalWordAPI *-- Repository
 class LocalExamAPI
 LocalExamAPI : -repository Repository~ExamDTO~
 LocalExamAPI : +create(ExamDTO exam) ExamDTO
-LocalExamAPI : +get_questions(ExamDTO exam) Tuple[Question]
-LocalExamAPI : +submit(ExamDTO exam, Tuple[Question] questions) ExamDTO
+LocalExamAPI : +get_questions(ExamDTO exam) List[QuestionDTO]
+LocalExamAPI : +submit(ExamDTO exam, List[QuestionDTO] questions) ExamDTO
+LocalExamAPI : +list() List~ExamDTO~
 LocalExamAPI *-- Repository
 
 
