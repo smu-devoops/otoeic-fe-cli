@@ -1,7 +1,8 @@
 from app.apis.base import *
+from app.apis.mock import *
 
 
 api = API(
-    user=UserAPI(),
+    user=MockUserAPI(),
     word=WordAPI(),
 )
