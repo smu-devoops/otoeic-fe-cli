@@ -3,7 +3,7 @@ from app.pages.base import Page
 
 
 class SignupPage(Page):
-    def render(self):
+    def visit(self):
         print(
             "-------------------------회원가입 페이지입니다---------------------------------"
         )
@@ -22,6 +22,6 @@ class SignupPage(Page):
 
 
 """
-render() 에서 사용할 페이지를 이곳에 import 해주세요.
+visit() 에서 사용할 페이지를 이곳에 import 해주세요.
 """
 from app.pages.login import LoginPage

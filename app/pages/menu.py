@@ -2,7 +2,7 @@ from app.pages.base import Page
 
 
 class MenuPage(Page):
-    def render(self):
+    def visit(self):
         self._print_welcome_message()
         selected_menu = self._select_menu()
         if selected_menu == 1:
@@ -33,7 +33,7 @@ class MenuPage(Page):
 
 
 """
-render() 에서 사용할 페이지를 이곳에 import 해주세요.
+visit() 에서 사용할 페이지를 이곳에 import 해주세요.
 """
 from app.pages.login import LoginPage
 from app.pages.signup import SignupPage

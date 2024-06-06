@@ -2,7 +2,7 @@ from app.pages.base import Page
 
 
 class UserHomePage(Page):
-    def render(self):
+    def visit(self):
         print(
             "-------------------------사용자 홈 페이지입니다---------------------------------"
         )
@@ -27,7 +27,7 @@ class UserHomePage(Page):
 
 
 """
-render() 에서 사용할 페이지를 이곳에 import 해주세요.
+visit() 에서 사용할 페이지를 이곳에 import 해주세요.
 """
 from app.pages.menu import MenuPage
 from app.pages.word_manage import WordManagePage

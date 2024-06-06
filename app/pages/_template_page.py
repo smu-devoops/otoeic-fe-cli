@@ -7,12 +7,12 @@ from app.pages.base import Page
 
 
 class TemplatePage(Page):
-    def render(self):
+    def visit(self):
         # TODO: 이곳에 페이지를 렌더링하는 코드를 작성하세요.
         ...
 
 
 """
-render() 에서 사용할 페이지를 이곳에 import 해주세요.
+visit() 에서 사용할 페이지를 이곳에 import 해주세요.
 """
 # from app.pages.menu import MenuPage

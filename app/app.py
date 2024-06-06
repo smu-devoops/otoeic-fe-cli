@@ -7,4 +7,4 @@ class Application:
     def run(self):
         page = get_initial_page()
         while page is not None:
-            page = page.render()
+            page = page.visit()

@@ -4,7 +4,7 @@ from app.pages.base import Page
 
 class LoginPage(Page):
 
-    def render(self):
+    def visit(self):
         print(
             "-------------------------로그인 페이지입니다---------------------------------"
         )
@@ -24,6 +24,6 @@ class LoginPage(Page):
 
 
 """
-render() 에서 사용할 페이지를 이곳에 import 해주세요.
+visit() 에서 사용할 페이지를 이곳에 import 해주세요.
 """
 from app.pages.user_home import UserHomePage
