@@ -22,7 +22,7 @@ class API:
 
 
 class UserAPI:
-    def login(self, username: str, password: str) -> Optional[User]:
+    def login(self, username: str, password: str) -> Optional[UserDTO]:
         """로그인을 시도한다.
 
         성공하면 User 객체를 반환한다.
@@ -34,7 +34,7 @@ class UserAPI:
         """로그아웃을 시도한다."""
         raise NotImplementedError
 
-    def register(self, username: str, password: str) -> Optional[User]:
+    def register(self, username: str, password: str) -> Optional[UserDTO]:
         """회원가입을 시도한다.
 
         성공하면 User 객체를 반환한다.
@@ -44,21 +44,21 @@ class UserAPI:
 
 
 class WordAPI:
-    def create(self, word: Word) -> Word:
+    def create(self, word: WordDTO) -> WordDTO:
         """단어를 생성한다.
 
         생성된 단어를 반환한다."""
         raise NotImplementedError
 
-    def get(self, id: int) -> Word:
+    def get(self, id: int) -> WordDTO:
         """단어를 가져온다."""
         raise NotImplementedError
 
-    def all(self) -> List[Word]:
+    def all(self) -> List[WordDTO]:
         """모든 단어를 가져온다."""
         raise NotImplementedError
 
-    def update(self, word: Word) -> Word:
+    def update(self, word: WordDTO) -> WordDTO:
         """단어를 수정한다.
 
         수정된 단어를 반환한다."""

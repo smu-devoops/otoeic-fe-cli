@@ -17,12 +17,12 @@ logger.addHandler(MockLoggerHandler())
 
 class MockUserRepository:
     def __init__(self):
-        self.instances: Dict[int, User] = {}
+        self.instances: Dict[int, UserDTO] = {}
         self.passwords: Dict[int, str] = {}
         self.auto_increment: int = 1
 
-    def create(self, username: str, password: str) -> User:
-        user = User(
+    def create(self, username: str, password: str) -> UserDTO:
+        user = UserDTO(
             id=self.auto_increment,
             username=username,
             level=1,
@@ -38,7 +38,7 @@ class MockUserRepository:
         self.auto_increment += 1
         return user
 
-    def find_by_username(self, username: str) -> Optional[User]:
+    def find_by_username(self, username: str) -> Optional[UserDTO]:
         for user in self.instances.values():
             if user.username == username:
                 return user
@@ -49,7 +49,7 @@ user_repository = MockUserRepository()
 
 
 class MockUserAPI(UserAPI):
-    def login(self, username: str, password: str) -> Optional[User]:
+    def login(self, username: str, password: str) -> Optional[UserDTO]:
         logger.warning('이건 Mock API 입니다. 실제 서버로 요청을 보내지 않습니다.')
         user = user_repository.find_by_username(username)
         if user is None:
@@ -62,7 +62,7 @@ class MockUserAPI(UserAPI):
             logger.warning('비밀번호가 틀렸습니다.')
             return None
 
-    def register(self, username: str, password: str) -> Optional[User]:
+    def register(self, username: str, password: str) -> Optional[UserDTO]:
         global user_auto_increment
         logger.warning('이건 Mock API 입니다. 실제 서버로 요청을 보내지 않습니다.')
         user = user_repository.create(username, password)
