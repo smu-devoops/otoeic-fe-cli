@@ -21,11 +21,11 @@ class UserDTO:
 
 @dataclasses.dataclass(frozen=True)
 class WordDTO:
-    id: typing.Optional[int] = None
     english: str
     korean: str
     type: str
     level: int
+    id: typing.Optional[int] = None
     date_modified: datetime.datetime = None
     date_created: datetime.datetime = None
     user_created: UserDTO = None
@@ -36,10 +36,10 @@ class WordDTO:
 
 @dataclasses.dataclass(frozen=True)
 class ExamDTO:
-    id: typing.Optional[int] = None
     level: int
     questions: int
     is_ranked: bool
+    id: typing.Optional[int] = None
     point: typing.Optional[int] = None
     date_created: typing.Optional[datetime.datetime] = None
     date_submitted: typing.Optional[datetime.datetime] = None
@@ -50,10 +50,10 @@ class ExamDTO:
 
 @dataclasses.dataclass
 class QuestionDTO:
-    id: typing.Optional[int] = None
-    eng: typing.Optional[str] = None
     kor: str = None
     type: str = None
+    id: typing.Optional[int] = None
+    eng: typing.Optional[str] = None
     answer_submitted: typing.Optional[str] = None
     is_correct: typing.Optional[bool] = None
 
