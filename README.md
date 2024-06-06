@@ -164,8 +164,8 @@ ExamDTO : +date_submitted Optional[datetime]
 
 class QuestionDTO
 QuestionDTO : +id Optional[int]
-QuestionDTO : +eng Optional[str]
-QuestionDTO : +kor str
+QuestionDTO : +english Optional[str]
+QuestionDTO : +korean str
 QuestionDTO : +type str
 QuestionDTO : +answer Optional[str]
 QuestionDTO : +is_correct Optional[bool]
