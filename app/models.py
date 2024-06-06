@@ -15,6 +15,9 @@ class UserDTO:
     date_created: datetime.datetime = None
     is_staff: int = None
 
+    def __hash__(self) -> int:
+        return self.id
+
 
 @dataclasses.dataclass(frozen=True)
 class WordDTO:
@@ -27,6 +30,9 @@ class WordDTO:
     date_created: datetime.datetime = None
     user_created: UserDTO = None
 
+    def __hash__(self) -> int:
+        return self.id
+
 
 @dataclasses.dataclass(frozen=True)
 class ExamDTO:
@@ -38,6 +44,9 @@ class ExamDTO:
     date_created: typing.Optional[datetime.datetime] = None
     date_submitted: typing.Optional[datetime.datetime] = None
 
+    def __hash__(self) -> int:
+        return self.id
+
 
 @dataclasses.dataclass
 class QuestionDTO:
@@ -47,3 +56,6 @@ class QuestionDTO:
     type: str = None
     answer_submitted: typing.Optional[str] = None
     is_correct: typing.Optional[bool] = None
+
+    def __hash__(self) -> int:
+        return self.id
