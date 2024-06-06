@@ -1,6 +1,4 @@
-from __future__ import annotations
-
-from app.pages import *
+from app.pages import get_initial_page
 
 
 class Application:
