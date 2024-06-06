@@ -45,5 +45,5 @@ class QuestionDTO:
     eng: typing.Optional[str] = None
     kor: str = None
     type: str = None
-    answer: typing.Optional[str] = None
+    answer_submitted: typing.Optional[str] = None
     is_correct: typing.Optional[bool] = None
